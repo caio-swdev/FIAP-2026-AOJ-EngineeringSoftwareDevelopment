@@ -1,13 +1,11 @@
 {
   "name": "Java & Cucumber Lab",
   "image": "mcr.microsoft.com/vscode/devcontainers/java:17",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:1": {}
-  },
   "customizations": {
     "vscode": {
       "extensions": [
         "vscjava.vscode-java-pack",
+        "vscjava.vscode-java-test",
         "vscjava.vscode-maven",
         "alexkrechik.cucumberautocomplete"
       ],
