@@ -1,4 +1,19 @@
 import uuid
+from abc import ABC, abstractmethod
+
+
+class CalculadoraDesconto(ABC):
+    @abstractmethod
+    def calcular(self, valor: float) -> float: pass
+
+class DescontoVIP(CalculadoraDesconto):
+    def calcular(self, valor: float) -> float: return valor * 0.85
+
+class DescontoPremium(CalculadoraDesconto):
+    def calcular(self, valor: float) -> float: return valor * 0.90
+
+class DescontoComum(CalculadoraDesconto):
+    def calcular(self, valor: float) -> float: return valor * 0.95
 
 
 class RepositorioPedido:
@@ -37,12 +52,13 @@ class ThunderMegazord:
         valor_total = pedido_data.get("valor_total", 0.0)
         tipo_cliente = pedido_data.get("tipo_cliente", "comum")
         
-        if tipo_cliente == "vip":
-            valor_total *= 0.85
-        elif tipo_cliente == "premium":
-            valor_total *= 0.90
-        else:
-            valor_total *= 0.95
+        estrategias_desconto = {
+            "vip": DescontoVIP(),
+            "premium": DescontoPremium(),
+            "comum": DescontoComum()
+        }
+        estrategia_atual = estrategias_desconto.get(tipo_cliente, DescontoComum())
+        valor_total = estrategia_atual.calcular(valor_total)
             
         # 3. Propulsores de Frete (OCP Nightmare)
         regiao = pedido_data.get("regiao", "sudeste")
