@@ -1,5 +1,19 @@
 import uuid
 
+
+class RepositorioPedido:
+    def salvar(self, valor_final: float):
+        pedido_id = str(uuid.uuid4())[:8]
+        print(f"[LOG] Gravando dados no cristal de memória {pedido_id}...")
+        print(f"[STATUS] Energia Final Requerida: R$ {valor_final:.2f}")
+
+
+class ServicoNotificacao:
+    def notificar(self, email: str):
+        if email:
+            print(f"[SINAL] Enviando telemetria para {email}...")
+
+
 class ThunderMegazord:
     """
     THUNDER MEGAZORD: Uma classe gigante que faz tudo ao mesmo tempo.
@@ -44,16 +58,9 @@ class ThunderMegazord:
             
         valor_final = valor_total + frete
         
-        # 4. Memória de Armazenamento (SRP/DIP Violation)
-        pedido_id = str(uuid.uuid4())[:8]
-        print(f"[LOG] Gravando dados no cristal de memória {pedido_id}...")
-        print(f"[STATUS] Energia Final Requerida: R$ {valor_final:.2f}")
-        
-        # 5. Comunicação Intergaláctica (SRP/DIP Violation)
-        email = pedido_data.get("email")
-        if email:
-            print(f"[SINAL] Enviando telemetria para {email}...")
-            
+        RepositorioPedido().salvar(valor_final)
+        ServicoNotificacao().notificar(pedido_data.get("email"))
+
         print("--- OPERAÇÃO MEGAZORD CONCLUÍDA ---")
         return True
 
