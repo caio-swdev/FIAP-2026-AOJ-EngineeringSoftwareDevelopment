@@ -16,6 +16,23 @@ class DescontoComum(CalculadoraDesconto):
     def calcular(self, valor: float) -> float: return valor * 0.95
 
 
+class CalculadoraFrete(ABC):
+    @abstractmethod
+    def calcular(self) -> float: pass
+
+class FreteNorte(CalculadoraFrete):
+    def calcular(self) -> float: return 50.0
+
+class FreteNordeste(CalculadoraFrete):
+    def calcular(self) -> float: return 40.0
+
+class FreteSul(CalculadoraFrete):
+    def calcular(self) -> float: return 30.0
+
+class FretePadrao(CalculadoraFrete):
+    def calcular(self) -> float: return 20.0
+
+
 class RepositorioPedido:
     def salvar(self, valor_final: float):
         pedido_id = str(uuid.uuid4())[:8]
@@ -62,15 +79,13 @@ class ThunderMegazord:
             
         # 3. Propulsores de Frete (OCP Nightmare)
         regiao = pedido_data.get("regiao", "sudeste")
-        frete = 0.0
-        if regiao == "norte":
-            frete = 50.0
-        elif regiao == "nordeste":
-            frete = 40.0
-        elif regiao == "sul":
-            frete = 30.0
-        else:
-            frete = 20.0
+        estrategias_frete = {
+            "norte": FreteNorte(),
+            "nordeste": FreteNordeste(),
+            "sul": FreteSul()
+        }
+        estrategia_frete_atual = estrategias_frete.get(regiao, FretePadrao())
+        frete = estrategia_frete_atual.calcular()
             
         valor_final = valor_total + frete
         
